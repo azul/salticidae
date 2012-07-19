@@ -1,2 +1,17 @@
-%h1 Users#new
-%p Find me in app/views/users/new.html.haml
+%h2= "1. " + t(:signup).capitalize
+= form_for @user, :class => "form-horizontal" do |f|
+  %legend=t :signup_message
+  .control-group
+    = f.label t(:login)
+    = f.text_field :login
+  .control-group
+    = f.label t(:password)
+    = f.password_field :password
+  .control-group
+    = f.label t(:password_confirmation)
+    = f.password_field :password_confirmation
+  %input#srp_url{:name => "srp_url", :type => "hidden", :value => "/"}/
+  %input#srp_server{:name => "srp_server", :type => "hidden", :value => "django"}/
+  .form-actions
+    = f.submit :class => "signup-btn btn btn-primary", :value => t(:signup).capitalize
+    = link_to t(:cancel), root_url, :class => "btn"

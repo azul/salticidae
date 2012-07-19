@@ -2,4 +2,9 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  login: "Login"
+  signup: "signup"
+  signup_message: "Signup to Leap"
+  password: "Password"
+  password_confirmation: "Confirm your password"
+  cancel: "Cancel"
