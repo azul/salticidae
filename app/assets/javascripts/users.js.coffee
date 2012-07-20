@@ -3,7 +3,29 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 #
 
-on_signup = (event) ->
+validate_password = (event) ->
+
+  password = $('#srp_password').val()
+  confirmation = $('#srp_password_confirmation').val()
+  login = $('#srp_username').val()
+
+  if password != confirmation
+    alert "Password and Confirmation do not match!"
+    $('#srp_password').focus()
+    return false
+  if password == login
+    alert "Password and Login may not match!"
+    $('#srp_password').focus()
+    return false
+  if password.length < 8
+    alert "Password needs to be at least 8 characters long!"
+    $('#srp_password').focus()
+    return false
+  
+  return true
+  
+
+insert_verifier = (event) ->
   # TODO: verify password confimation
   srp = new SRP
   salt = srp.salt()
@@ -14,5 +36,6 @@ on_signup = (event) ->
   $('#srp_confirmation').val('')
 
 $(document).ready ->
-  $('#new_user').submit on_signup
+  $('#new_user').submit validate_password
+  $('#new_user').submit insert_verifier
 
