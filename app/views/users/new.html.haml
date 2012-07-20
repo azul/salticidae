@@ -3,7 +3,7 @@
   %legend=t :signup_message
   = f.input :login, :input_html => { :id => :srp_username }
   = f.input :password, :input_html => { :id => :srp_password }
-  = f.input :password_confirmation, :input_html => {:id => :srp_password_confirmation}
-  = f.input :password_verifier, :as => :hidden
-  = f.input :password_salt, :as => :hidden, :input_html => {:value => "1234567890"}
+  = f.input :password_confirmation, :input_html => { :id => :srp_password_confirmation }
+  = f.input :password_verifier, :as => :hidden, :input_html => { :id => :srp_password_verifier }
+  = f.input :password_salt, :as => :hidden, :input_html => { :value => "1234567890", :id => :srp_salt }
   = f.button :submit, :value => t(:signup), :class => 'btn-primary' 
