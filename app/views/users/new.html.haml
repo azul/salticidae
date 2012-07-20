@@ -1,17 +1,9 @@
-%h2= "1. " + t(:signup).capitalize
-= form_for @user, :class => "form-horizontal" do |f|
+%h2=t :signup
+= simple_form_for @user do |f|
   %legend=t :signup_message
-  .control-group
-    = f.label t(:login)
-    = f.text_field :login
-  .control-group
-    = f.label t(:password)
-    = f.password_field :password
-  .control-group
-    = f.label t(:password_confirmation)
-    = f.password_field :password_confirmation
-  %input#srp_url{:name => "srp_url", :type => "hidden", :value => "/"}/
-  %input#srp_server{:name => "srp_server", :type => "hidden", :value => "django"}/
-  .form-actions
-    = f.submit :class => "signup-btn btn btn-primary", :value => t(:signup).capitalize
-    = link_to t(:cancel), root_url, :class => "btn"
+  = f.input :login
+  = f.input :password
+  = f.input :password_confirmation
+  = #f.input :srp_url, :value => '/', :type => :hidden
+  = #f.input :srp_server, :value => 'django', :type => :hidden
+  = f.button :submit, :value => t(:signup), :class => 'btn-primary' 

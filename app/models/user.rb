@@ -5,6 +5,9 @@ class User < CouchRest::Model::Base
   property :password_verifier, String
   property :password_salt, String
 
+  validates :login, :password_salt, :password_verifier, :presence => true
+  validates :login, :uniqueness => true
+
   timestamps!
 
   design do
