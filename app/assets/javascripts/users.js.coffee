@@ -6,7 +6,8 @@
 on_signup = (event) ->
   # TODO: verify password confimation
   srp = new SRP
-  salt = $('#srp_salt').val()
+  salt = srp.salt()
+  $('#srp_salt').val(salt)
   $('#srp_password_verifier').val(srp.calcV(salt))
   # clear the password so we do not submit it
   $('#srp_password').val('')
