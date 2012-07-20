@@ -5,7 +5,12 @@
 = link_to "Salticidae", root_path, :class => 'brand'
 .pull-right
   %ul.nav
-    %li= link_to t(:signup), sign_up_path
+    - if logged_in?
+      %li= current_user.login
+      %li= link_to t(:logout), log_out_path
+    - else
+      %li= link_to t(:signup), sign_up_path
+      %li= link_to t(:login), log_in_path
 .nav-collapse.collapse
   %ul.nav
     %li{:class => controller?(:home) ? :active : ""}
