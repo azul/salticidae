@@ -21,4 +21,5 @@ group :development, :test do
   gem 'guard-test'
   gem 'guard-livereload'
   gem 'rack-livereload'
+  gem 'libnotify'
 end
