@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+
+  test "test set of attributes should be valid" do
+    user = User.new(attributes_for(:user))
+    assert user.valid?
+  end
+
   test "authenticate should return nil if no login is given" do
     assert_nil User.authenticate(nil, nil)
   end

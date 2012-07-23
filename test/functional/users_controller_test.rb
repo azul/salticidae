@@ -8,9 +8,9 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should create new user" do
-    params = valid_user_params
-    user = stub params
-    params.stringify_keys!.except!('id')
+    params = attributes_for(:user)
+    user = stub params.merge(:id => 123)
+    params.stringify_keys!
     User.expects(:create!).with(params).returns(user)
     post :create, :user => params
     assert_nil session[:user_id]
@@ -19,7 +19,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should redirect to signup form on failed attempt" do
-    params = valid_user_params.slice(:login)
+    params = attributes_for(:user).slice(:login)
     user = User.new(params)
     params.stringify_keys!
     User.expects(:create!).with(params).raises(VALIDATION_FAILED.new(user))
@@ -32,10 +32,6 @@ class UsersControllerTest < ActionController::TestCase
 
   def valid_user_params
     {
-      :login => "me",
-      :id => 123,
-      :password_verifier => "1234",
-      :password_salt => "4321"
     }
   end
 end
