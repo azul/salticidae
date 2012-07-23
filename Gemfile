@@ -23,3 +23,7 @@ group :development, :test do
   gem 'rack-livereload'
   gem 'libnotify'
 end
+
+group :test do
+  gem 'mocha'
+end
