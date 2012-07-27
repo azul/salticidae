@@ -25,5 +25,5 @@ group :development, :test do
 end
 
 group :test do
-  gem 'mocha'
+  gem 'mocha', :require => false
 end
