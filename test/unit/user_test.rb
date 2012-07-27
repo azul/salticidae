@@ -7,13 +7,23 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
-  test "authenticate should return nil if no login is given" do
-    assert_nil User.authenticate(nil, nil)
+  test "find_by_param gets User by login" do
+    user = User.create!(attributes_for(:user))
+    assert_equal user, User.find_by_param(user.login)
+    user.destroy
   end
 
-  test "authenticate returns user if exists" do
-    u = User.create! :login => "a", :password_salt => "asdf", :password_verifier => "asdf"
-    assert_equal u.reload, User.authenticate("a", "")
-    u.destroy
+  test "to_param gives user login" do
+    user = User.new(attributes_for(:user))
+    assert_equal user.login, user.to_param
   end
+
+  test "initialize_auth returns server handshake" do
+    client_rnd = "a123"
+    user = User.new(attributes_for(:user))
+    srp_session = user.initialize_auth(client_rnd)
+    assert srp_session.is_a? SRP::Authorization::Session
+    assert_equal client_rnd, srp_session[:A]
+  end
+
 end

@@ -14,9 +14,12 @@ class User < CouchRest::Model::Base
     view :by_login
   end
 
-  #TODO: this needs a real SRP workflow...
-  def self.authenticate(login, verifier)
-    return nil unless login && verifier
-    self.find_by_login(login)
+  class << self
+    alias_method :find_by_param, :find_by_login
   end
+
+  def to_param
+    self.login
+  end
+
 end
