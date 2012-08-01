@@ -39,10 +39,10 @@ class SessionsControllerTest < ActionController::TestCase
     session[:handshake] = @server_handshake
     user = stub :login => "me", :id => 123
     user.expects(:authenticate!).
-      with(@client_auth, @server_handshake).
+      with(@client_rnd, @server_handshake).
       returns(@server_auth)
     User.expects(:find_by_param).with(user.login).returns(user)
-    post :update, :id => user.login, :client_auth => @client_auth
+    post :update, :id => user.login, :client_auth => @client_rnd
     assert_nil session[:handshake]
     assert_equal @server_auth.to_json, @response.body
     assert_equal user.id, session[:user_id]
