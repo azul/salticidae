@@ -1,5 +1,7 @@
 class User < CouchRest::Model::Base
 
+  include SRP::Authentication
+
   property :login, String
   property :email, String
   property :password_verifier, String
@@ -22,4 +24,11 @@ class User < CouchRest::Model::Base
     self.login
   end
 
+  def salt
+    password_salt.hex
+  end
+
+  def verifier
+    password_verifier.hex
+  end
 end
