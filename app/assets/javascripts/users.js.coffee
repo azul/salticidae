@@ -33,7 +33,7 @@ insert_verifier = (event) ->
   $('#srp_password_verifier').val(srp.calcV(salt))
   # clear the password so we do not submit it
   $('#srp_password').val('cleared out - use verifier instead')
-  $('#srp_confirmation').val('using srp - store verifier')
+  $('#srp_password_confirmation').val('using srp - store verifier')
 
 $(document).ready ->
   $('#new_user').submit validate_password
