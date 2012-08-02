@@ -3,10 +3,12 @@ require 'test_helper'
 class SessionsControllerTest < ActionController::TestCase
 
   def setup
-    @client_rnd = 'a123'
-    @server_rnd = 'b123'
-    @server_rnd_exp = 'e123'
-    @server_handshake = {:A => @client_rnd, :B => @server_rnd, :b => @server_rnd_exp}
+    @client_hex = 'a123'
+    @client_rnd = @client_hex.hex
+    @server_hex = 'b123'
+    @server_rnd = @server_hex.hex
+    @server_rnd_exp = 'e123'.hex
+    @server_handshake = stub :aa => @client_rnd, :bb => @server_rnd, :b => @server_rnd_exp
   end
 
   test "should get login screen" do
@@ -20,10 +22,10 @@ class SessionsControllerTest < ActionController::TestCase
       with(@client_rnd).
       returns(@server_handshake)
     User.expects(:find_by_param).with(user.login).returns(user)
-    post :create, :login => user.login, 'A' => @client_rnd
+    post :create, :login => user.login, 'A' => @client_hex
     assert_equal @server_handshake, session[:handshake]
     assert_response :success
-    assert_equal @server_handshake.slice(:B).to_json, @response.body
+    assert_equal({:B => @server_hex}.to_json, @response.body)
   end
 
   test "should report user not found" do
@@ -42,7 +44,7 @@ class SessionsControllerTest < ActionController::TestCase
       with(@client_rnd, @server_handshake).
       returns(@server_auth)
     User.expects(:find_by_param).with(user.login).returns(user)
-    post :update, :id => user.login, :client_auth => @client_rnd
+    post :update, :id => user.login, :client_auth => @client_hex
     assert_nil session[:handshake]
     assert_equal @server_auth.to_json, @response.body
     assert_equal user.id, session[:user_id]
@@ -53,10 +55,10 @@ class SessionsControllerTest < ActionController::TestCase
     session[:handshake] = @server_handshake
     user = stub :login => "me", :id => 123
     user.expects(:authenticate!).
-      with(@client_auth, @server_handshake).
+      with(@client_rnd, @server_handshake).
       raises(WRONG_PASSWORD)
     User.expects(:find_by_param).with(user.login).returns(user)
-    post :update, :id => user.login, :client_auth => @client_auth
+    post :update, :id => user.login, :client_auth => @client_hex
     assert_nil session[:handshake]
     assert_nil session[:user_id]
     assert_equal error.to_json, @response.body
