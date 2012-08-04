@@ -4,6 +4,10 @@ API tests
 
 Testing the restful api from a simple python client as that's what we'll be using.
 
+This test so far mostly demoes the API. We have no SRP calc in there.
+
+TODO: keep track of the cookies during login. The server uses the session to keep track of the random numbers A and B.
+
 The output of signup_and_login_wrong_password pretty well describes the SRP API:
 
 ```

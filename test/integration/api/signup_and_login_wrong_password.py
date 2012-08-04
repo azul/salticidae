@@ -14,6 +14,7 @@ def print_and_parse(response):
   print response.request.method + ': ' + response.url
   print "    " + json.dumps(response.request.data)
   print " -> " + response.text
+#  print " () " + json.dumps(requests.utils.dict_from_cookiejar(response.cookies))
   return json.loads(response.text)
 
 def signup():
