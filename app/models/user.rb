@@ -17,11 +17,17 @@ class User < CouchRest::Model::Base
   end
 
   class << self
-    alias_method :find_by_param, :find_by_login
+    def find_by_param(login)
+      return find_by_login(login) || raise(RECORD_NOT_FOUND)
+    end
   end
 
   def to_param
     self.login
+  end
+
+  def to_json(options={})
+    super(options.merge(:only => ['login', 'password_salt']))
   end
 
   def salt
