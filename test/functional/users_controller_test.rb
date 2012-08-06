@@ -30,8 +30,4 @@ class UsersControllerTest < ActionController::TestCase
     assert_template :new
   end
 
-  def valid_user_params
-    {
-    }
-  end
 end
