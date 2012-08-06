@@ -14,10 +14,10 @@ class SessionsController < ApplicationController
     @user = User.find_by_param(params[:id])
     @server_auth = @user.authenticate!(params[:client_auth].hex, session.delete(:handshake))
     session[:user_id] = @user.id
-    render :json => @server_auth
+    render :json => {:M2 => @server_auth.to_s(16)}
   rescue WRONG_PASSWORD
     session[:handshake] = nil
-    render :json => {:error => "wrong password", :field => "password"}
+    render :json => {:errors => {"password" => ["wrong password"]}}
   end
 
   def destroy

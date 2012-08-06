@@ -13,4 +13,9 @@ class ActiveSupport::TestCase
         :password_salt => "4321" }
     end
   end
+
+  def assert_json_response(object)
+    object.stringify_keys! if object.respond_to? :stringify_keys!
+    assert_equal object, JSON.parse(@response.body)
+  end
 end
