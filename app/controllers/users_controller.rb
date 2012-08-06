@@ -11,6 +11,6 @@ class UsersController < ApplicationController
     respond_with(@user, :location => root_url, :notice => "Signed up!")
   rescue VALIDATION_FAILED => e
     @user = e.document
-    render "new"
+    respond_with(@user)
   end
 end
