@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     session[:handshake] = @user.initialize_auth(params['A'].hex)
     render :json => { :B => session[:handshake].bb.to_s(16) }
   rescue RECORD_NOT_FOUND
-    render :json => {:error => "unknown user", :field => "login"}
+    render :json => {:errors => {:login => ["unknown user"]}}
   end
 
   def update
