@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+# FAILS
+#
+# This test is currently failing for me because the session is not kept.
+# Played with it a bunch - is probably messed up right now as well.
+
+
 server = 'http://localhost:3000'
 
 import requests
