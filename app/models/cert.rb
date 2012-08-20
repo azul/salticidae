@@ -3,7 +3,7 @@ class Cert < CouchRest::Model::Base
 
   property :random, Float, :accessible => false
 
-  before_create :set_random
+  before_create :set_random, :attach_zip
 
   design do
     view :by_random
@@ -28,5 +28,8 @@ class Cert < CouchRest::Model::Base
     self.random = rand
   end
 
+  def attach_zip
+    self.create_attachment :file => StringIO.new("dummy cert"), :name => 'cert.zip'
+  end
 
 end

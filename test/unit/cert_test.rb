@@ -3,49 +3,21 @@ require 'test_helper'
 class CertTest < ActiveSupport::TestCase
 
   setup do
-    2.times { Cert.create! }
+    @sample = Cert.new
+    @sample.set_random
+    @sample.attach_zip
   end
 
-  teardown do
-    Cert.all.each {|c| c.destroy}
+  test "certs come with attachments" do
+    assert @sample.has_attachment? "cert.zip"
   end
 
-  test "picks random sample" do
-    Cert.create! # with 3 certs chances are pretty low we pick the same one 40 times.
-    picked = []
-    first = Cert.sample.id
-    current = Cert.sample.id
-    40.times do
-      break if current != first
-      current = Cert.sample.id
-    end
-    assert_not_equal current, first
+  test "cert.zipped returns zip attachment" do
+    assert_equal "application/zip", @sample.zipped["content_type"]
   end
 
-  test "picks cert from the pool" do
-    assert_difference "Cert.count", -1 do
-      cert = Cert.pick_from_pool
-    end
-  end
-
-  test "err's out if all certs have been destroyed" do
-    sample = Cert.first.tap{|c| c.destroy}
-    Cert.all.each {|c| c.destroy}
-    assert_raises RECORD_NOT_FOUND do
-      Cert.expects(:sample).returns(sample)
-      cert = Cert.pick_from_pool
-    end
-  end
-
-  test "picks other cert if first pick has been destroyed" do
-    first = Cert.first.tap{|c| c.destroy}
-    second = Cert.first
-    Cert.expects(:sample).at_least_once.
-      returns(first).
-      then.returns(second)
-    cert = Cert.pick_from_pool
-    assert_equal second, cert
-    assert_nil Cert.first
+  test "cert.zipname returns name for the zip file" do
+    assert_equal "cert.zip", @sample.zipname
   end
 
 end
