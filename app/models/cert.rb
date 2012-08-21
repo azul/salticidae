@@ -1,9 +1,10 @@
 class Cert < CouchRest::Model::Base
+
   timestamps!
 
   property :random, Float, :accessible => false
 
-  before_create :set_random, :attach_zip
+  before_validation :set_random, :attach_zip, :on => :create
 
   validates :random, :presence => true,
     :numericality => {:greater_than => 0, :less_than => 1}
@@ -20,7 +21,7 @@ class Cert < CouchRest::Model::Base
     end
 
     def pick_from_pool
-      cert = self.sample
+      cert = self.sample || self.create!
       cert.destroy
       return cert
     rescue RESOURCE_NOT_FOUND

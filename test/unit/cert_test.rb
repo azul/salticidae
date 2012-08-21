@@ -25,6 +25,7 @@ class CertTest < ActiveSupport::TestCase
   end
 
   test "validates random" do
+    @sample.stubs(:set_random)
     [0, 1, nil, "asdf"].each do |invalid|
       @sample.random = invalid
       assert !@sample.valid?, "#{invalid} should not be a valid value for random"
@@ -32,6 +33,7 @@ class CertTest < ActiveSupport::TestCase
   end
 
   test "validates attachment" do
+    @sample.stubs(:attach_zip)
     @sample.delete_attachment(@sample.zipname)
     assert !@sample.valid?, "Cert should require zipped attachment"
   end
