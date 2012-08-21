@@ -5,6 +5,11 @@ class Cert < CouchRest::Model::Base
 
   before_create :set_random, :attach_zip
 
+  validates :random, :presence => true,
+    :numericality => {:greater_than => 0, :less_than => 1}
+
+  validates :zipped, :presence => true
+
   design do
     view :by_random
   end
@@ -19,7 +24,7 @@ class Cert < CouchRest::Model::Base
       cert.destroy
       return cert
     rescue RESOURCE_NOT_FOUND
-      retry if Cert.count > 0
+      retry if Cert.by_random.count > 0
       raise RECORD_NOT_FOUND
     end
   end
@@ -29,7 +34,15 @@ class Cert < CouchRest::Model::Base
   end
 
   def attach_zip
-    self.create_attachment :file => StringIO.new("dummy cert"), :name => 'cert.zip'
+    self.create_attachment :file => StringIO.new("dummy cert"), :name => zipname
+  end
+
+  def zipname
+    'cert.zip'
+  end
+
+  def zipped
+    attachments[zipname]
   end
 
 end

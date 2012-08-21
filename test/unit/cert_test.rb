@@ -20,4 +20,20 @@ class CertTest < ActiveSupport::TestCase
     assert_equal "cert.zip", @sample.zipname
   end
 
+  test "test data is valid" do
+    assert @sample.valid?
+  end
+
+  test "validates random" do
+    [0, 1, nil, "asdf"].each do |invalid|
+      @sample.random = invalid
+      assert !@sample.valid?, "#{invalid} should not be a valid value for random"
+    end
+  end
+
+  test "validates attachment" do
+    @sample.delete_attachment(@sample.zipname)
+    assert !@sample.valid?, "Cert should require zipped attachment"
+  end
+
 end
